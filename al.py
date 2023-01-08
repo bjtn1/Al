@@ -1,19 +1,13 @@
 import argparse
 import os
 import hashlib
+from collections import defaultdict
 
-'''
-TODO:
-    1. Optimize runtime and space complexity
-    2. Implement better documentation
-    3. Implement program to be run on the terminal
-'''
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     sysname = os.uname()[0]
 
-    if sysname != 'Darwin':
-        exit('This program currently only supports mac operating systems. Goodbye.')
+    if sysname != "Darwin":
+        exit("This program currently only supports mac operating systems. Goodbye.")
 
     parser = argparse.ArgumentParser(
             prog="Al",
@@ -28,77 +22,98 @@ if __name__ == '__main__':
     directory_to_organize = os.path.abspath(args.path)
     
     if not os.path.exists(directory_to_organize):
-        exit('This directory does not exist')
+        exit("This directory does not exist")
     elif not os.path.isdir(directory_to_organize):
-        exit('This is not a directory')
+        exit("This is not a directory")
 
     os.chdir(directory_to_organize)
+
     sorted_directory = sorted(os.listdir())
 
-    organized_files = {}
+    organized_files = defaultdict(list)  # key = file extension, value = list of files with that extension
 
-    '''
-    We'll use this set to store every file that we see and make comparison faster
-    '''
-    seen_files = {}
+    hashed_by_size_table = defaultdict(list)
+    semi_hashed_table = defaultdict(list)
+    fully_hashed_table = defaultdict(list)
 
-    for current_file in sorted_directory:
-        '''
-        Skip over hidden files and directories.
-        '''
-        if current_file.startswith('.') or os.path.isdir(current_file): 
-            continue
+    first_byte_chunk = 1024
+
+    def get_hash(file_object, first_iteration):
+        """
+        Returns the hash value of the given file object. If `first_iteration` is True, only the first 1024 bytes of the file are hashed. Otherwise, the entire file is hashed.
+        """
+        if first_iteration:
+            file_contents = file_object.read(first_byte_chunk)
+            return hashlib.sha256(file_contents).hexdigest()
         else:
-            '''
-            Get the file extension of the current file. This will be used as the key in the hash table
-            '''
-            current_file_name, current_file_extension = os.path.splitext(current_file)
+            file_contents = file_object.read()
+            return hashlib.sha256(file_contents).hexdigest()
 
-            '''
-            Add this file's hash to the set if we have permission to read it. Otherwise continue
-            '''
-            if os.access(current_file, os.R_OK):
-                with open(current_file, 'rb') as f:
-                    current_file_contents = f.read()
-                    current_file_hash = hashlib.sha256(current_file_contents).hexdigest()
-            else:
-                continue
-            
-            '''
-            Some files (like makefiles) don't have an extension. In that case, the key will be "no-extension"
-            '''
-            if not current_file_extension:
-                current_file_extension = 'no-extension'
-            else:
-                '''
-                Remove the period in the file extension (.pdf -> pdf)
-                '''
-                current_file_extension = current_file_extension[1:]
+    def add_to_organized_files(file):
+        """
+        Adds given file to the `organized_files` dictionary under the appropriate file extension key
+        """
+        _, file_extension = os.path.splitext(file)
+        file_extension = file_extension[1:] if file_extension else "no-extension"  # if file has no extension, assign it the "no-extension" label, otherwise remove the dot
+        organized_files[file_extension].append(file)
 
-            '''
-            If the dictionary is empty or the key doesn't exist we add the key-value pair, update the set of seen files, and continue iterating
-            '''
-            if not organized_files or not current_file_extension in organized_files:
-                organized_files.setdefault(current_file_extension, []).append(current_file)
-                seen_files.setdefault(current_file_hash, current_file)
-                continue
-            
-            '''
-            At this point, the dictionary is NOT empty, and the keys are the same. We need to check if current_file already exists in the 
-            list of files of this key.
-            (BRUTE FORCE WAY NEEDS TO BE OPTIMIZED) TODO: OPTIMIZE THIS
-            To do this, we iterate through the list and compare the hash values of the contents of every file in the list with
-            current_file_hash
-            '''
-            if current_file_hash in seen_files:
-                '''
-                If we've already seen this file, add it to duplicates
-                '''
-                organized_files.setdefault('duplicates', []).append(current_file)
-            else:
-                '''
-                Otherwise, add it to the hash table and update the set
-                '''
-                organized_files.setdefault(current_file_extension, []).append(current_file)
-                seen_files.setdefault(current_file_hash, current_file)
+    '''Add all files to hashed_by_size_table'''
+    for current_file in sorted_directory:
+        is_hidden = current_file.startswith(".")
+        is_directory = os.path.isdir(current_file)
+        if not is_hidden and not is_directory: 
+            try:
+                current_file_size = os.path.getsize(current_file)
+            except OSError:
+                raise Exception("Unable to obtain the current file's size")
+            hashed_by_size_table[current_file_size].append(current_file)
 
+    first_hash = True
+
+    '''Go through hashed_by_size_table'''''
+    for key, list_of_files in hashed_by_size_table.items():
+        if len(list_of_files) == 1:
+            '''If the file is unique, we add it to organized_files'''
+            add_to_organized_files((list_of_files[0]))
+        else:
+            '''If file is not unique, hash its first 1024 bytes and add them to semi_hashed_table'''
+            for file in list_of_files:
+                try:
+                    with open(file, 'rb') as file_object:
+                        current_hash = get_hash(file_object, first_hash)
+                except OSError:
+                    raise Exception("Unable to read current file")
+                semi_hashed_table[current_hash].append(file)
+
+    first_hash = False
+
+    '''Go through semi_hashed_table'''''
+    for key, list_of_files in semi_hashed_table.items():
+        if len(list_of_files) == 1:
+            '''If the file is unique, we add it to organized_files'''
+            add_to_organized_files(list_of_files[0])
+        else:
+            '''If file is not unique, hash it fully and and add it to fully_hashed_table'''
+            for file in list_of_files:
+                try:
+                    with open(file, 'rb') as file_object:
+                        current_hash = get_hash(file_object, first_hash)
+                except OSError:
+                    raise Exception("Unable to read current file")
+                fully_hashed_table[current_hash].append(file)
+
+    '''Go through fully_hashed_table'''
+    for key, list_of_files in fully_hashed_table.items():
+        if len(list_of_files) == 1:
+            '''If the file is unique, we add it to organized_files'''
+            add_to_organized_files(list_of_files[0])
+        else:
+            '''Add the first file in the list to the respective place in organized_files
+            Add the rest of the files to organized_files["duplicates"]'''
+            add_to_organized_files(list_of_files[0])
+            organized_files["duplicates"].extend(list_of_files[1:])
+
+    for k, v in organized_files.items():
+        print(f"[{k}]")
+        for f in organized_files[k]:
+            print(f"\t-{f}")
