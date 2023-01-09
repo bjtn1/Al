@@ -78,7 +78,8 @@ def find_duplicate_files(source_table, destination_table, iteration=0):
         # TODO: add one dupe to destination_table, and the rest to destination_table["duplicates"]
         for _, list_of_files in source_table.items():
             add_unique_file_to_table(list_of_files[0], destination_table)
-            destination_table["duplicate"].append(list_of_files[1:])
+            for file in list_of_files[1:]:
+                destination_table["duplicate"].append(file)
         return
 
     # iterate through source_table and add unique files to destination_table
@@ -138,7 +139,7 @@ def main():
         exit(f"{path} is not a directory")
 
     # go to the directory we need to organize
-    os.chdir("/Users/bnog/Downloads")
+    os.chdir(path)
 
     # obtain all files in path, save them in a list
     files_in_path = os.listdir()
