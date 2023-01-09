@@ -52,7 +52,7 @@ def get_hash(file_object, iteration):
 def add_unique_file_to_table(file, destination_table):
     """Adds given file to the `organized_files` hash table under the appropriate key"""
     _, file_extension = os.path.splitext(file)
-    file_extension = file_extension[1:] if file_extension else "no-extension"  # if file has no extension, assign it the "no-extension" label, otherwise remove the dot
+    file_extension = file_extension[1:] + "-files" if file_extension else "no-extension-files"  # if file has no extension, assign it the "no-extension" label, otherwise remove the dot
     destination_table[file_extension].append(file)
 
 
@@ -79,7 +79,7 @@ def find_duplicate_files(source_table, destination_table, iteration=0):
         for _, list_of_files in source_table.items():
             add_unique_file_to_table(list_of_files[0], destination_table)
             for file in list_of_files[1:]:
-                destination_table["duplicate"].append(file)
+                destination_table["duplicate-files"].append(file)
         return
 
     # iterate through source_table and add unique files to destination_table
