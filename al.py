@@ -124,12 +124,12 @@ def find_duplicate_files(source_table, destination_table, iteration=0):
 
 
 def move_files(source_table, path):
-    
+    os.mkdir("organized_files")
     for directory_name, files in source_table.items():
         for file in files:
             source_file = f"{path}/{file}"
-            destination_file = f"{path}/{directory_name}/{file}"
-            destination_directory = f"{path}/{directory_name}"
+            destination_file = f"{path}/organized_files/{directory_name}/{file}"
+            destination_directory = f"{path}/organized_files/{directory_name}"
             
             if not os.path.exists(destination_directory):
                 os.mkdir(destination_directory)
@@ -188,6 +188,9 @@ def main():
 
     # begin organization process
     find_duplicate_files(hashed_files, organized_files)
+
+    # move files
+    move_files(organized_files, path)
 
     if args.verbose:
         print_table_as_tree(organized_files, path)
