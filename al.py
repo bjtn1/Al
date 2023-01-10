@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import shutil
 import hashlib
 from collections import defaultdict
 
@@ -90,13 +91,8 @@ def rehash_and_add_to_table(list_of_files, destination_table, iteration):
 
 def find_duplicate_files(source_table, destination_table, iteration=0):
     potentially_duplicate_files = defaultdict(list)
-    # we know we're done finding duplicates if:
-    #   iteration == 2
-    #   after adding all unique files to destination_table, there are no duplicate files in source_table
-    #   after adding unique files to destination_table, the list is empty
 
     if iteration == 2:
-        # TODO: add one dupe to destination_table, and the rest to destination_table["duplicates"]
         for _, list_of_files in source_table.items():
             add_unique_file_to_table(list_of_files[0], destination_table)
             for file in list_of_files[1:]:
@@ -125,6 +121,20 @@ def find_duplicate_files(source_table, destination_table, iteration=0):
         # recursive call
         iteration += 1
         find_duplicate_files(source_table, destination_table, iteration)
+
+
+def move_files(source_table, path):
+    
+    for directory_name, files in source_table.items():
+        for file in files:
+            source_file = f"{path}/{file}"
+            destination_file = f"{path}/{directory_name}/{file}"
+            destination_directory = f"{path}/{directory_name}"
+            
+            if not os.path.exists(destination_directory):
+                os.mkdir(destination_directory)
+
+            shutil.move(source_file, destination_file)
 
 
 def main():
