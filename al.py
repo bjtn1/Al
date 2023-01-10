@@ -27,15 +27,35 @@ def is_hidden_file(file):
     return file.startswith(".")
 
 
-def print_table(source_table):
-    """Prints the keys and values in `source_table` in alphabetical order"""
+def print_table_as_tree(source_table, path):
     source_table = {k: source_table[k] for k in sorted(source_table)}
     source_table = {k: sorted(v) for k, v in source_table.items()}
-    for k, _ in source_table.items():
-        print(f"[{k}]")
-        for f in source_table[k]:
-            print(f"\t-{f}")
-        print()
+
+    print(path)
+    print("└── organized_files")
+
+    directory_names = list(source_table.keys())
+    
+    for directory_name, files in source_table.items():
+        if directory_names[-1] == directory_name:
+            print(f"    └── {directory_name}")
+        else:
+            print(f"    ├── {directory_name}")
+        for file in files:
+            if len(files) == 1:
+                print(f"    │   └── {file}")
+            elif file == files[-1] and directory_names[-1] == directory_name:
+                print(f"        └── {file}")
+            elif file == files[-1]:
+                print(f"    │   └── {file}")
+            elif directory_names[-1] == directory_name:
+                print(f"        ├── {file}")
+            else:   
+                print(f"    │   ├── {file}")
+        
+        if directory_names[-1] != directory_name:
+            print(f"    │")
+
 
 
 def get_hash(file_object, iteration):
@@ -160,7 +180,7 @@ def main():
     find_duplicate_files(hashed_files, organized_files)
 
     if args.verbose:
-        print_table(organized_files)
+        print_table_as_tree(organized_files, path)
 
 
 if __name__ == "__main__":
