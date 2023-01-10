@@ -35,6 +35,7 @@ def print_table(source_table):
         print(f"[{k}]")
         for f in source_table[k]:
             print(f"\t-{f}")
+        print()
 
 
 def get_hash(file_object, iteration):
@@ -107,32 +108,34 @@ def find_duplicate_files(source_table, destination_table, iteration=0):
 
 
 def main():
+    
+    sysname = os.uname()[0]
+    if not is_macOS(sysname):
+        exit("This program currently only works on macOS. Goodbye")
+
     files_in_path = []
 
     organized_files = defaultdict(list)
     hashed_files = defaultdict(list)
 
-    sysname = os.uname()[0]
-    if not is_macOS(sysname):
-        exit("This program currently only works on macOS. Goodbye")
-
     # set up parser
     parser = argparse.ArgumentParser(
             prog="Al",
-            description="This tool aims to organize a given directory by removing duplicate files, and creating directories based on the file extensions found within the path passed in",
-            epilog="To be done"
+            description="Al is a program that organizes a given directory by removing duplicate files and creating directories based on the file extensions found within the given path",
+            # epilog="To be done"
             )
 
-    # # set up parser args
-    parser.add_argument("path", help="Path to the directory to be organized")
+    # set up parser args
+    parser.add_argument("path", help="path to the directory to be organized. i.e.: ~/Downloads")
+    parser.add_argument("-v", "--verbose", action="store_true", help="show tree of the resulting organized folder")
 
-    # # parse arguments
+    # parse arguments
     args = parser.parse_args()
 
-    # # get absolute path of directory to organize
+    # get absolute path of directory to organize
     path = os.path.abspath(args.path)
 
-    # # ensure path passed in exists and it is a directory
+    # ensure path passed in exists and it is a directory
     if not path_exists(path):
         exit(f"{path} does not exist")
     elif not is_directory(path):
@@ -156,7 +159,8 @@ def main():
     # begin organization process
     find_duplicate_files(hashed_files, organized_files)
 
-    print_table(organized_files)
+    if args.verbose:
+        print_table(organized_files)
 
 
 if __name__ == "__main__":
