@@ -210,11 +210,11 @@ al ~/Downloads -v
 
 ### Before
 
-<img src="./pics/al-before.png">
+<img src="./imgs//al-before.png">
 
 ### After
 
-<img src="./pics/al-after.png">
+<img src="./imgs//al-after.png">
 
 ## Useful information
 
