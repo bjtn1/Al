@@ -226,7 +226,5 @@ The necessary permissions must be granted to `Al` so it can fulfill its job. Mor
 
 ## Current TODOs
 
-<li>
-  <ol>Package the program</ol>
-  <ol>Testing</ol>
-</li>
+1. Package the program
+2. Testing
