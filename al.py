@@ -145,9 +145,9 @@ def main():
 
     # set up parser
     parser = argparse.ArgumentParser(
-            prog="Al",
-            description="Al is a program that organizes a given directory by removing duplicate files and creating directories based on the file extensions found within the given path",
-            # epilog="To be done"
+            prog="al",
+            description="Al is a program that organizes a given directory by creating directories based on the file extensions found within the given path",
+            usage="%(prog)s [options] path"
             )
 
     # set up parser args
