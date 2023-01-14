@@ -13,11 +13,6 @@ def is_macOS(sysname):
     return sysname == "Darwin"
 
 
-def path_exists(path):
-    """Returns true if path exists, false otherwise. Takes in param `path` which is a string representing the path whose existence will be checked"""
-    return os.path.exists(path)
-
-
 def is_directory(path):
     """Returns true if `path` is a directory. Param `path` is a string representing the path to be checked"""
     return os.path.isdir(path)
@@ -33,7 +28,7 @@ def print_table_as_tree(source_table, path):
     source_table = {k: sorted(v) for k, v in source_table.items()}
 
     print(path)
-    print("└── organized_files")
+    print("└── organized-files")
 
     directory_names = list(source_table.keys())
     
@@ -166,7 +161,7 @@ def main():
     path = os.path.abspath(args.path)
 
     # ensure path passed in exists and it is a directory
-    if not path_exists(path):
+    if not os.path.exists(path):
         exit(f"{path} does not exist")
     elif not is_directory(path):
         exit(f"{path} is not a directory")
