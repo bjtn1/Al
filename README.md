@@ -6,7 +6,7 @@
 It efficiently organizes whatever directory you'd like, skipping over pre-existing directories as well as hidden files and folders
 <br>
 <br>
-`Al` creates a new folder called `organized-files` and creates a folder for every file extension found within the path that you tell it to (See [Pictures](##Pictures))
+`Al` creates a new folder called `organized-files` and creates a folder for every file extension found within the path that you tell it to (See [Pictures](#Pictures))
 
 ## Installation
 ***NOT ABLE TO BE INSTALLED YET UNLESS YOU CLONE THE REPO***
