@@ -221,11 +221,11 @@ al ~/Downloads -v
 ## Useful information
 
 `Al` ***DOES NOT*** remove files! I've left the choice for removal up to the user. 
-<br>
-The process of finding duplicate files will ***ALWAYS*** require obtaining the file's size, then reading and hashing the first 1024 bytes of every potentially duplicate file, and finally reading and hashing every remaining potentially duplicate file.
-<br>
+<br><br>
+The process of finding duplicate files will ***ALWAYS*** require obtaining the file's size first, then reading and hashing the first 1024 bytes of every potentially duplicate file, and finally reading and hashing every remaining potentially duplicate file.
+<br><br>
 The program ***DOES NOT** alter nor collect file information; you're free to read over the source code at any time. 
-<br>
+<br><br>
 The necessary permissions must be granted to `Al` so it can fulfill its job. More information on this will be released later.
 
 ## Current TODOs
