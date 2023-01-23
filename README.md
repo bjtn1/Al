@@ -1,10 +1,16 @@
 # Al
 
-`Al` is a command line tool written in `Python`. It efficiently organizes whatever directory you'd like, skipping over pre-existing directories and hidden files and/or folders.<br>
+`Al` is a command line tool written in `Python`.
+<br>
+<br>
+It efficiently organizes whatever directory you'd like, skipping over pre-existing directories and hidden files and/or folders
+<br>
+<br>
 `Al` creates a new folder called `organized files` and creates a folder for ever type of file extension found within the path that you tell it to (See [Pictures](##Pictures))
 
 ## Installation
 ***NOT ABLE TO BE INSTALLED YET UNLESS YOU CLONE THE REPO***
+<br>
 <br>
 More information on how to install this program will be added later.
 
@@ -224,7 +230,7 @@ al ~/Downloads -v
 <br><br>
 The process of finding duplicate files will ***ALWAYS*** require obtaining the file's size first, then reading and hashing the first 1024 bytes of every potentially duplicate file, and finally reading and hashing every remaining potentially duplicate file.
 <br><br>
-The program ***DOES NOT** alter nor collect file information; you're free to read over the source code at any time. 
+The program **DOES NOT** alter nor collect file information; you're free to read over the source code at any time. 
 <br><br>
 The necessary permissions must be granted to `Al` so it can fulfill its job. More information on this will be released later.
 
