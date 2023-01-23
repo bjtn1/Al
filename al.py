@@ -11,15 +11,6 @@ from collections import defaultdict
 
 byte_chunk = 1024
 
-def is_macOS(sysname):
-    """Returns true if current system is macOS, false otherwise. Takes in parameter `sysname` which is a string representing current system's name"""
-    return sysname == "Darwin"
-
-
-def is_directory(path):
-    """Returns true if `path` is a directory. Param `path` is a string representing the path to be checked"""
-    return os.path.isdir(path)
-
 
 def is_hidden_file(file):
     """Returns true if `file` starts with `.`"""
@@ -138,7 +129,7 @@ def move_files(source_table, path):
 def main():
     
     sysname = os.uname()[0]
-    if not is_macOS(sysname):
+    if not sysname == "Darwin":
         exit("This program currently only works on macOS. Goodbye")
 
     files_in_path = []
@@ -166,7 +157,7 @@ def main():
     # ensure path passed in exists and it is a directory
     if not os.path.exists(path):
         exit(f"{path} does not exist")
-    elif not is_directory(path):
+    elif not os.path.isdir(path):
         exit(f"{path} is not a directory")
 
     # go to the directory we need to organize
@@ -177,7 +168,7 @@ def main():
 
     # add files in current path to a list
     for current_file in files_in_path:
-        if not is_hidden_file(current_file) and not is_directory(current_file):
+        if not is_hidden_file(current_file) and not os.path.isdir(current_file):
             try:
                 current_file_size = os.path.getsize(current_file)
             except OSError:
