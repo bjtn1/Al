@@ -1,6 +1,7 @@
 # Al
 
 `Al` is a command line tool written in `Python`. It efficiently organizes whatever directory you'd like, skipping over pre-existing directories and hidden files and/or folders. 
+`Al` creates a new folder called `organized files` and creates a folder for ever type of file extension found within the path that you tell it to (See [Pictures](##Pictures))
 
 ## Installation
 ***NOT ABLE TO BE INSTALLED YET UNLESS YOU CLONE THE REPO***
