@@ -49,7 +49,7 @@ def print_table_as_tree(source_table, path):
 
 
 def get_hash(file_object, iteration):
-    """Returns the hash value of the given file object. If `first_iteration` is True, only the first 1024 bytes of the file are hashed. Otherwise, the entire file is hashed"""
+    """Returns the hash value of the given file object"""
     if iteration == 0:
         file_contents = file_object.read(byte_chunk)
         return hashlib.sha256(file_contents).hexdigest()
