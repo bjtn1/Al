@@ -113,7 +113,9 @@ def find_duplicate_files(source_table, destination_table, iteration=0):
 
 
 def move_files(source_table, path):
-    os.mkdir("organized_files")
+    if not os.path.exists(f"{path}/organized_files"):
+        os.mkdir("organized_files")
+    
     for directory_name, files in source_table.items():
         for file in files:
             source_file = f"{path}/{file}"
@@ -141,7 +143,7 @@ def main():
     parser = argparse.ArgumentParser(
             prog="al",
             description="Al is a program that organizes a given directory by creating directories based on the file extensions found within the given path",
-            usage="%(prog)s [options] path"
+            # usage="%(prog)s [options] path"
             )
 
     # set up parser args
