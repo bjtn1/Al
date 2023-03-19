@@ -6,15 +6,17 @@
 It efficiently organizes whatever directory you'd like, skipping over pre-existing directories as well as hidden files and folders
 <br>
 <br>
-`Al` creates a new folder called `organized-files` and creates a folder for every file extension found within the path that you tell it to (See [Pictures](#Pictures))
+`Al` creates a new folder called `organized-files` and creates a folder for every file extension found within the path that you tell it to (See [Pictures](#pictures))
 
 ## Installation
-***NOT ABLE TO BE INSTALLED YET UNLESS YOU CLONE THE REPO***
+
+**_NOT ABLE TO BE INSTALLED YET UNLESS YOU CLONE THE REPO_**
 <br>
 <br>
 More information on how to install this program will be added later.
 
 ## Usage
+
 ```
 Usage: al [options] path
 
@@ -201,40 +203,5 @@ al ~/Downloads -v
     │
     └── zip-files
         ├── Automation Pokemon 2.zip
-        ├── ComputerControl-0.20.8.zip
-        ├── Copy of MinecraftFInal-Part 1.zip
-        ├── Decoder_Lab.zip
-        ├── Exam2StudentCode.zip
-        ├── LicenseSupportInstallerMac.zip
-        ├── MPK mini Software Manager-1.1.1-2.zip
-        ├── Programming Project 3 Booklist (F21).zip
-        ├── Programming Project 3 Booklist (F22)(1).zip
-        ├── Programming Project 3 Booklist (F22).zip
-        ├── logioptionsplus_installer.zip
-        └── vim-snippets-master.zip
+
 ```
-
-## Pictures
-
-### Before
-
-<img src="./imgs//al-before.png">
-
-### After
-
-<img src="./imgs//al-after.png">
-
-## Useful information
-
-`Al` ***DOES NOT*** remove files! I've left the choice for removal up to the user. 
-<br><br>
-The process of finding duplicate files will ***ALWAYS*** require obtaining the file's size first, then reading and hashing the first 1024 bytes of every potentially duplicate file, and finally reading and hashing every remaining potentially duplicate file.
-<br><br>
-The program **DOES NOT** alter nor collect file information; you're free to read over the source code at any time. 
-<br><br>
-The necessary permissions must be granted to `Al` so it can fulfill its job. More information on this will be released later.
-
-## Current TODOs
-
-1. Package the program
-2. Testing
